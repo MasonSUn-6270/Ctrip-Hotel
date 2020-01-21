@@ -9,7 +9,7 @@ header = {
 class CtripHotel(object):
 
     @staticmethod
-    def city_code():
+    def city_code()->dict:
         data = {}
         city_code_source = 'https://hotels.ctrip.com/international/Tool/citySource_J.aspx?charset=utf-8'
         city_codes = requests.get(url=city_code_source, headers=header).text
