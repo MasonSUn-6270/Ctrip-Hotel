@@ -12,13 +12,14 @@ def ChromeDriverNOBrowser():
 
 
 url = 'https://hotels.ctrip.com/international/mombasa818'
+wb = ChromeDriverNOBrowser()
+
+def get_trip_info(wb,citycode)->list:
 
 
-def get_trip_info(url):
-
-    wb = ChromeDriverNOBrowser()
-    wb.get(url)
+    wb.get('https://hotels.ctrip.com/international/'+citycode)
     while not wb.find_elements_by_css_selector(".J_hlist_item.hlist_item"):
+        print('connecting')
         pass
     divs = wb.find_elements_by_css_selector(".J_hlist_item.hlist_item")
 
@@ -29,10 +30,12 @@ def get_trip_info(url):
         try:
             price = wb.find_element_by_xpath(f'//*[@id="{id}"]/div/div[5]/a/div[1]/div/span').text
         except:
+            try:
+                price = wb.find_element_by_xpath(f'//*[@id="{id}"]/div/div[6]/a/div[1]/div/span').text
+            except:
+                price = '99999'
 
-            price = wb.find_element_by_xpath(f'//*[@id="{id}"]/div/div[6]/a/div[1]/div/span').text
-
-        print(name, price)
+        yield [name, int(price)]
 
 
 if __name__ == '__main__':
